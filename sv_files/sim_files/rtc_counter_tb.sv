@@ -5,7 +5,7 @@
   Author: Waseem Orphali
   Date: 06/16/2020
 ---------------------------------------------------------------------------------*/
-'timescale 1ns/1ns
+`timescale 1ns/1ns
 
 module rtc_counter_tb;
 
@@ -18,7 +18,7 @@ module rtc_counter_tb;
 
     integer i = 0;
     
-    rtc_counter DUT (
+    rtc_24bitcounter DUT (
         .i_rtcclk       (i_rtcclk),
         .i_reset_n      (i_reset_n),
         .i_countenb     (i_countenb),
@@ -47,7 +47,7 @@ module rtc_counter_tb;
 
 // --------------------- COUNTER_TC_02 ----------------------------
     // set 'i_reset_n' to 1
-    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1 for 1 clk cycle
+    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1
     // set 'i_reset_n' to 0
     // observe waveform and check if the internal signal 'o_bcdcount' got set to 0
     
@@ -59,8 +59,6 @@ module rtc_counter_tb;
         i_latchcount = 1;
         @(posedge i_rtcclk);
         @(negedge i_rtcclk);
-        i_countenb = 0;
-        i_latchcount = 0;
         #20;
         
         i_reset_n = 0;
@@ -72,7 +70,7 @@ module rtc_counter_tb;
 // --------------------- COUNTER_TC_03 ----------------------------
     // set 'i_reset_n' to 0
     // set 'i_reset_n' to 1
-    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1 for 1 clk cycle
+    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1
     // wait until 'o_bcdcount' = ROLLOVER_COUNT
     // observe waveform and check that 'o_bcdcount' is set to 0 after one clk cycle
     
@@ -89,10 +87,6 @@ module rtc_counter_tb;
         i_countinit = 0;
         i_countenb = 1;
         i_latchcount = 1;
-        @(posedge i_rtcclk);
-        @(negedge i_rtcclk);
-        i_countenb = 0;
-        i_latchcount = 0;
         for (i = 0; i < 10; i = i+1) begin      // waiting for 10 clk cycles
             @(posedge i_rtcclk);
             @(negedge i_rtcclk);
@@ -104,7 +98,7 @@ module rtc_counter_tb;
 // --------------------- COUNTER_TC_04 ----------------------------
     // set 'i_reset_n' to 0
     // set 'i_reset_n' to 1
-    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1 for 1 clk cycle
+    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1
     // wait until 'o_bcdcount' = ROLLOVER_COUNT
     // observe waveform and check that 'o_rolloverflag' is set to 1 after one clk cycle for 1 clk cycle
     
@@ -123,8 +117,6 @@ module rtc_counter_tb;
         i_latchcount = 1;
         @(posedge i_rtcclk);
         @(negedge i_rtcclk);
-        i_countenb = 0;
-        i_latchcount = 0;
         for (i = 0; i < 10; i = i+1) begin      // waiting for 10 clk cycles
             @(posedge i_rtcclk);
             @(negedge i_rtcclk);
@@ -138,7 +130,7 @@ module rtc_counter_tb;
 // --------------------- COUNTER_TC_05 ----------------------------
     // set 'i_reset_n' to 0
     // set 'i_reset_n' to 1
-    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1 for 1 clk cycle
+    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1
     // wait for rising edge of clk
     // observe waveform and check if 'o_bcdcount' gets incremented on rising edge of clk
     
@@ -155,11 +147,6 @@ module rtc_counter_tb;
         i_countinit = 0;
         i_countenb = 1;
         i_latchcount = 1;
-        @(posedge i_rtcclk);
-        @(negedge i_rtcclk);
-        i_countenb = 0;
-        i_latchcount = 0;
-        
         @(posedge i_rtcclk);
         @(negedge i_rtcclk);
         @(posedge i_rtcclk);
@@ -226,7 +213,7 @@ module rtc_counter_tb;
 // --------------------- COUNTER_TC_13 ----------------------------
     // set 'i_reset_n' to 0
     // set 'i_reset_n' to 1
-    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1 for 1 clk cycle
+    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1
     // wait for 20 clk cycles
     // observe waveform and check if 'o_count' gets incremented on rising edge of clk
     
@@ -243,10 +230,6 @@ module rtc_counter_tb;
         i_countinit = 0;
         i_countenb = 1;
         i_latchcount = 1;
-        @(posedge i_rtcclk);
-        @(negedge i_rtcclk);
-        i_countenb = 0;
-        i_latchcount = 0;
         for (i = 0; i < 20; i = i+1) begin      // waiting for 10 clk cycles
             @(posedge i_rtcclk);
             @(negedge i_rtcclk);
@@ -259,7 +242,7 @@ module rtc_counter_tb;
 // --------------------- COUNTER_TC_14 ----------------------------
     // set 'i_reset_n' to 0
     // set 'i_reset_n' to 1
-    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1 for 1 clk cycle
+    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1
     // wait until 'o_count' is set to 'h595999
     // wait for one more clk cycle
     // check if 'o_count' is set to 0
@@ -279,14 +262,12 @@ module rtc_counter_tb;
         i_latchcount = 1;
         @(posedge i_rtcclk);
         @(negedge i_rtcclk);
-        i_countenb = 0;
-        i_latchcount = 0;
         
         wait (o_count == 'h595999);
         @(posedge i_rtcclk);
         @(negedge i_rtcclk);
         if (o_count == 0)
-            $display ("Test case COUNTER_TC_14 passed");
+            $display ("Test case COUNTER_TC_14 passed at time %0t", $time);
         else
             $display ("Test case COUNTER_TC_14 failed");
     
@@ -296,7 +277,7 @@ module rtc_counter_tb;
 
 // --------------------- COUNTER_TC_15 ----------------------------
     // set 'i_reset_n' to 1
-    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1 for 1 clk cycle
+    // enable the counter by setting 'i_countenb' and 'i_latchcount' to 1
     // wait for 5 clk cycles
     // set 'i_reset_n' to 0
     // check if 'o_count' is set to 0
@@ -315,8 +296,6 @@ module rtc_counter_tb;
         i_latchcount = 1;
         @(posedge i_rtcclk);
         @(negedge i_rtcclk);
-        i_countenb = 0;
-        i_latchcount = 0;
         
         for (i = 0; i < 5; i = i+1) begin
             @(posedge i_rtcclk);
@@ -327,10 +306,10 @@ module rtc_counter_tb;
         #10;
         
         if (o_count == 0)
-            $display ("Test case COUNTER_TC_15 passed");
+            $display ("Test case COUNTER_TC_15 passed at time %0t", $time);
         else
             $display ("Test case COUNTER_TC_15 failed");
 // --------------------- End of COUNTER_TC_15 --------------------------
-
+    end;
 
 endmodule
