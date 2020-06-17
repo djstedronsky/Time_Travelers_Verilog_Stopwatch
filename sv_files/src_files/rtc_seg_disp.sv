@@ -17,7 +17,7 @@ module rtc_seg_disp (
     output  reg  [7:0]  o_segout6   // output for sixth digit
     );
     
-    localparam [7:0] MEM [9:0] = {0,1,2,3,4,5,6,7,8,9}; // 7-seg code to display numbers 0 - 9 according to Nexys A7 datasheet
+    localparam [7:0] MEM [9:0] = {'h90, 'h80, 'hf8, 'h82, 'h92, 'h99, 'hb0, 'ha4, 'hf9, 'hc0}; // 7-seg code to display numbers 0 - 9 according to Nexys A7 datasheet
     
     assign o_segout1 = MEM[i_count[3:0]];
     assign o_segout2 = MEM[i_count[7:4]];
