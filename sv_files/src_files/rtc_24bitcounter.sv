@@ -14,29 +14,29 @@ module rtc_24bitcounter
 	    input i_countenb,		//enable signal mapped to o_countenb from rtc_trigger
 		input i_countinit,		//mapped to o_countinit from rtc_trigger
 		input i_latchcount,		//mapped to o_latchcount from rtc_trigger
-		output reg[23:0] o_count	// 24-bit bcd encoded output
+		output wire[23:0] o_count	// 24-bit bcd encoded output
 		
 		//output reg o_maxtime,	//Unused top module rollover flag can be used for testing purposes
 		);
 						
 
 //temp reg for max time flag						
-reg maxflag = 1'b0;
+wire maxflag;
 
 //temp reg for rollover flags
-reg rflag1 = 1'b0;
-reg rflag2 = 1'b0;
-reg rflag3 = 1'b0;
-reg rflag4 = 1'b0;
-reg rflag5 = 1'b0;
+wire rflag1;
+wire rflag2;
+wire rflag3;
+wire rflag4;
+wire rflag5;
 
 //temp reg for bcd digits
-reg [3:0] bcdcount1 = 4'd0;
-reg [3:0] bcdcount2 = 4'd0;
-reg [3:0] bcdcount3 = 4'd0;
-reg [3:0] bcdcount4 = 4'd0;
-reg [3:0] bcdcount5 = 4'd0;
-reg [3:0] bcdcount6 = 4'd0;
+wire [3:0] bcdcount1;
+wire [3:0] bcdcount2;
+wire [3:0] bcdcount3;
+wire [3:0] bcdcount4;
+wire [3:0] bcdcount5;
+wire [3:0] bcdcount6;
     
     //digit 1 - 10s of milliseconds - rollover at 9
     rtc_4bitcounter #(4'd9) d1 (

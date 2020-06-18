@@ -21,36 +21,30 @@ module rtc_4bitcounter
 		output reg[3:0] o_bcdcount	// 4-bit bcd encoded output
 		);
 						
-							
-reg [3:0] counter = 4'd0;
-reg rflag = 1'b0;
-
+		
 always_ff @ (posedge i_rtcclk or negedge i_reset_n) begin
 	if (~i_reset_n)
 		begin:reset_condition
-			counter <= 4'd0;
-			rflag <= 0;
+			o_bcdcount <= 4'd0;
+			o_rolloverflag <= 0;
 		end:reset_condition
 	
     else 
 		begin:count_enable
 			if (i_countenb == 1'b1 & i_latchcount == 1'b1)
 				begin:rollover
-					if (counter == ROLLOVER_COUNT)
+					if (o_bcdcount == ROLLOVER_COUNT)
 						begin
-						counter <= 4'd0;
-						rflag <= 1'b1;
+						o_bcdcount <= 4'd0;
+						o_rolloverflag <= 1'b1;
 						end
 					else
 						begin
-						counter <= counter + 1;
-						rflag <= 1'b0;
+						o_bcdcount <= o_bcdcount + 1;
+						o_rolloverflag <= 1'b0;
 						end
 				end:rollover
 		end:count_enable
-	
-	assign o_bcdcount = counter;
-	assign o_rolloverflag = rflag;
 					
   end
 endmodule
